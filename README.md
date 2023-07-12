@@ -1,2 +1,2 @@
 # sm.sunrinin
-sunriniot
+Sunrin Internet High School IoT Contest
