@@ -56,10 +56,10 @@ function OrthographicCamera(props) {
 
 const Sun = () => {
     const sunRef = useRef();
-    const pointLightRef = useRef();
+    const LightRef = useRef();
 
     const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/suntexture.png';
+    const imageUrl = '/img/sunTexture.png';
     const texture = textureLoader.load(imageUrl);
 
     const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -78,10 +78,11 @@ const Sun = () => {
             <mesh geometry={geometry} ref={sunRef} material={material} position={[0,0,0]}  >
                 {/* <meshStandardMaterial color={'orange'}/> */}
             </mesh>
-            <directionalLight
-            ref={pointLightRef}
+            <ambientLight
+            ref={LightRef}
             position={[10, 10, 10]}
             intensity={1}
+            color={'grey'}
             />
         </>
     
@@ -96,7 +97,7 @@ const Mercury = () => {
     const MerGeometry = new THREE.SphereGeometry(0.0383, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/mercuryTexture.jpeg';
+    const imageUrl = '/img/mercuryTexture.png';
     const texture = textureLoader.load(imageUrl);
 
     const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -129,7 +130,7 @@ const Venus = () => {
     const VenGeometry = new THREE.SphereGeometry(0.095, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/venustexture.webp';
+    const imageUrl = '/img/venTexture.png';
     const texture = textureLoader.load(imageUrl);
 
     const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -160,7 +161,7 @@ const Earth = () => {
     const EarthGeometry = new THREE.SphereGeometry(0.1, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/earthtexture.webp';
+    const imageUrl = '/img/earthTexture.png';
     const texture = textureLoader.load(imageUrl);
 
     const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -192,7 +193,7 @@ const Mars = () => {
     const MarsGeometry = new THREE.SphereGeometry(0.0532, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/marstexture.webp';
+    const imageUrl = '/img/marsTexture.png';
     const texture = textureLoader.load(imageUrl);
 
     const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -224,7 +225,7 @@ const Jupiter = () => {
     const JupGeometry = new THREE.SphereGeometry(0.3,32,32);
 
     const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/juptexture.webp';
+    const imageUrl = '/img/jupTexture.png';
     const texture = textureLoader.load(imageUrl);
 
     const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -256,7 +257,7 @@ const Saturn = () => {
     const SatGeometry = new THREE.SphereGeometry(0.25,32,32);
 
     const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/sattexture.webp';
+    const imageUrl = '/img/satTexture.png';
     const texture = textureLoader.load(imageUrl);
 
     const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -290,7 +291,7 @@ const Uranus = () => {
     const UraGeometry = new THREE.SphereGeometry(0.08, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/uratexture.jpeg';
+    const imageUrl = '/img/uraTexture.png';
     const texture = textureLoader.load(imageUrl);
 
     const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -324,7 +325,7 @@ const Neptune = () => {
     const NepGeometry = new THREE.SphereGeometry(0.08, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/neptexture.jpeg';
+    const imageUrl = '/img/nepTexture.png';
     const texture = textureLoader.load(imageUrl);
 
     const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -350,6 +351,7 @@ const Neptune = () => {
     )
 
 }
+
 const App = () => {
 
     return (
