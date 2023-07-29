@@ -1,4 +1,4 @@
-import React, {useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { createRoot } from 'react-dom';
 import * as THREE from "three";
 import {Canvas, useFrame, useThree} from 'react-three-fiber';
@@ -68,9 +68,9 @@ const Sun = () => {
     const geometry = new THREE.SphereGeometry(0.8, 32, 32);
 
     useFrame(() => {
-        sunRef.current.rotation.x += 0.001;
-        sunRef.current.rotation.y += 0.001;
-        sunRef.current.rotation.z += 0.001;
+        sunRef.current.rotation.x += 0.0005;
+        sunRef.current.rotation.y += 0.0005;
+        sunRef.current.rotation.z += 0.0005;
     });
 
     return (
@@ -78,10 +78,10 @@ const Sun = () => {
             <mesh geometry={geometry} ref={sunRef} material={material} position={[0,0,0]}  >
                 {/* <meshStandardMaterial color={'orange'}/> */}
             </mesh>
-            <pointLight
+            <ambientLight
             ref={LightRef}
             position={[10, 100, 100]}
-            intensity={1}
+            intensity={0.8}
             color={'white'}
             />
         </>
@@ -92,9 +92,9 @@ const Sun = () => {
 const Mercury = () => {
     const MerRef = useRef();
     const radius = 1.5;
-    const speed = 1;
+    const speed = 0.1;
     
-    const MerGeometry = new THREE.SphereGeometry(0.0383, 32, 32);
+    const MerGeometry = new THREE.SphereGeometry(0.05, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
     const imageUrl = '/img/mercuryTexture.png';
@@ -109,7 +109,7 @@ const Mercury = () => {
         const x = radius * Math.cos(angle);
         const z = radius * Math.sin(angle);
         MerRef.current.position.set(x, 0, z); // 해당 위치로 이동
-        MerRef.current.rotation.y += 0.05;
+        MerRef.current.rotation.y += 0.005;
 
     });
 
@@ -125,7 +125,7 @@ const Mercury = () => {
 const Venus = () => {
     const VenRef = useRef();
     const radius = 2;
-    const speed = 0.5;
+    const speed = 0.05;
     
     const VenGeometry = new THREE.SphereGeometry(0.095, 32, 32);
 
@@ -141,7 +141,7 @@ const Venus = () => {
         const x = radius * Math.cos(angle);
         const z = radius * Math.sin(angle);
         VenRef.current.position.set(x, 0, z); // 해당 위치로 이동
-        VenRef.current.rotation.y += 0.02; // 공전과 동시에 회전
+        VenRef.current.rotation.y += 0.002; // 공전과 동시에 회전
     });
 
     return (
@@ -156,7 +156,7 @@ const Venus = () => {
 const Earth = () => {
     const EarthRef = useRef();
     const radius = 2.5;
-    const speed = 0.7;
+    const speed = 0.07;
 
     const EarthGeometry = new THREE.SphereGeometry(0.1, 32, 32);
 
@@ -173,7 +173,7 @@ const Earth = () => {
         const z = radius * Math.sin(angle);
         EarthRef.current.position.set(x, 0, z); // 해당 위치로 이동
 
-        EarthRef.current.rotation.y += 0.05
+        EarthRef.current.rotation.y += 0.005
     });
 
     return (
@@ -188,7 +188,7 @@ const Earth = () => {
 const Mars = () => {
     const MarsRef = useRef();
     const radius = 3;
-    const speed = 0.4;
+    const speed = 0.04;
 
     const MarsGeometry = new THREE.SphereGeometry(0.0532, 32, 32);
 
@@ -205,7 +205,7 @@ const Mars = () => {
         const z = radius * Math.sin(angle);
         MarsRef.current.position.set(x, 0, z); // 해당 위치로 이동
 
-        MarsRef.current.rotation.y += 0.025
+        MarsRef.current.rotation.y += 0.0025
     });
 
     return (
@@ -220,7 +220,7 @@ const Mars = () => {
 const Jupiter = () => {
     const JupRef = useRef();
     const radius = 3.5;
-    const speed = 0.1;
+    const speed = 0.01;
 
     const JupGeometry = new THREE.SphereGeometry(0.3,32,32);
 
@@ -237,7 +237,7 @@ const Jupiter = () => {
         const z = radius * Math.sin(angle);
         JupRef.current.position.set(x, 0, z); // 해당 위치로 이동
 
-        JupRef.current.rotation.y += 0.15
+        JupRef.current.rotation.y += 0.015
     });
 
     return (
@@ -251,8 +251,8 @@ const Jupiter = () => {
 
 const Saturn = () => {
     const SatRef = useRef();
-    const radius = 4;
-    const speed = 0.2;
+    const radius = 4.5;
+    const speed = 0.02;
 
     const SatGeometry = new THREE.SphereGeometry(0.25,32,32);
 
@@ -270,23 +270,63 @@ const Saturn = () => {
         SatRef.current.position.set(x, 0, z); // 해당 위치로 이동
 
         //SatRef.current.rotation.x += 0.1
-        SatRef.current.rotation.y += 0.1
+        SatRef.current.rotation.y += 0.01
         //SatRef.current.rotation.z += 0.1
     });
 
     return (
         <>
-        <mesh geometry={SatGeometry} ref={SatRef} material={material} position={[0.7,0,0]}>
+        <mesh geometry={SatGeometry} ref={SatRef} material={material} position={[1,0,0]}>
             {/* <meshStandardMaterial color={'#8c5f26'}/> */}
         </mesh>
         </>
     )
 }
 
+const SaturnRing = () => {
+    const RingRef = useRef();
+    const radius = 4.5;
+    const speed = 0.02;
+
+    const RingGeometry = new THREE.TorusGeometry(1, 0.2, 2, 50);
+    RingGeometry.rotateX(-Math.PI / 2);
+
+    const textureLoader = new THREE.TextureLoader();
+    const imageUrl = '/img/SatRing.png';
+    const texture = textureLoader.load(imageUrl);
+
+    const material = new THREE.MeshStandardMaterial({ map: texture });
+
+    useFrame((state, delta) => {
+        const t = state.clock.getElapsedTime(); // 경과 시간
+        const angle = t * speed; // 현재 시간에 해당하는 각도
+        const x = radius * Math.cos(angle);
+        const z = radius * Math.sin(angle);
+        RingRef.current.position.set(x, 0, z); // 해당 위치로 이동
+        // RingRef.current.rotation.y += 0.01
+    });
+
+    const saturnRing = useRef()
+    useEffect(() => {
+        if (saturnRing.current && saturnRing.current.geometry) {
+            saturnRing.current.geometry.parameters.radius = 0.3
+        }
+    }, [])
+
+    return (
+        <>
+        <mesh geometry={RingGeometry}  material={material} ref={(mesh) => { RingRef.current = mesh }} scale={[0.4,0.4,0.4]} position={[1, 0, 0]}>
+            {/* <meshStandardMaterial color={'orange'} ref={saturnRing} /> */}
+        </mesh>
+        </>
+    )
+}
+
+
 const Uranus = () => {
     const UraRef = useRef();
-    const radius = 4.5;
-    const speed = 0.3;
+    const radius = 5.5;
+    const speed = 0.03;
 
     const UraGeometry = new THREE.SphereGeometry(0.08, 32, 32);
 
@@ -303,14 +343,14 @@ const Uranus = () => {
         const z = radius * Math.sin(angle);
         UraRef.current.position.set(x, 0, z); // 해당 위치로 이동
 
-        UraRef.current.rotation.x += 0.03
+        UraRef.current.rotation.x += 0.003
         //UraRef.current.rotation.y += 0.03
         //UraRef.current.rotation.z += 0.03
     });
 
     return (
         <>
-        <mesh geometry={UraGeometry} ref={UraRef} material={material} position={[1.2, 0, 0]}>
+        <mesh geometry={UraGeometry} ref={UraRef} material={material} position={[2, 0, 0]}>
             {/* <meshStandardMaterial color={'#26598c'}/> */}
         </mesh>
         </>
@@ -319,8 +359,8 @@ const Uranus = () => {
 
 const Neptune = () => {
     const NepRef = useRef();
-    const radius = 5;
-    const speed = 0.2;
+    const radius = 6.3;
+    const speed = 0.02;
 
     const NepGeometry = new THREE.SphereGeometry(0.08, 32, 32);
 
@@ -338,13 +378,13 @@ const Neptune = () => {
         NepRef.current.position.set(x, 0, z); // 해당 위치로 이동
 
         //NepRef.current.rotation.x += 0.03
-        NepRef.current.rotation.y += 0.03
+        NepRef.current.rotation.y += 0.003
         //NepRef.current.rotation.z += 0.03
     });
 
     return (
         <>
-        <mesh geometry={NepGeometry} ref={NepRef} material={material} position={[1.7, 0, 0]}>
+        <mesh geometry={NepGeometry} ref={NepRef} material={material} position={[2.5, 0, 0]}>
             {/* <meshStandardMaterial color={'#1b73cc'} /> */}
         </mesh>
         </>
@@ -365,6 +405,7 @@ const App = () => {
             <Mars />
             <Jupiter />
             <Saturn />
+            <SaturnRing />
             <Uranus />
             <Neptune />
             <OrbitControls />
@@ -380,12 +421,11 @@ const Info = () => {
     return (
         <>
             <p style={{whiteSpace: "pre", position: "absolute"}}>
-            Distance between Planets : <br></br> {/*지구와의 거리*/}
-            Surface temperatures of Planets (Relative to Earth) : <br></br> {/*표면 온도*/}
-            Ra / Dec : <br></br> {/*적경 및 적위*/}
-            Az / Alt : <br></br> {/*수평 좌표계*/}
-            Visibility : </p> {/*눈에 보이는 시간*/}
-
+            Distance between Planets : Mars : 227.9 million km <br></br> {/*지구와의 거리*/}
+            Surface temperatures of Planets (Relative to Earth) : Mars : -63°C <br></br> {/*표면 온도*/}
+            Ra / Dec : Mars : 2h 22m 25s / 15° 46° 41° <br></br> {/*적경 및 적위*/}
+            Az / Alt : Mars : 148° / 18°<br></br> {/*수평 좌표계*/}
+            Visibility : Mars : Visible in the evening sky </p> {/*눈에 보이는 시간*/}
         </>
     )
 }
