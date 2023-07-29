@@ -1,4 +1,4 @@
-import React, {useRef, useState } from 'react';
+import React, {useRef } from 'react';
 import { createRoot } from 'react-dom';
 import * as THREE from "three";
 import {Canvas, useFrame, useThree} from 'react-three-fiber';
@@ -65,7 +65,7 @@ const Sun = () => {
     const material = new THREE.MeshStandardMaterial({ map: texture });
 
 
-    const geometry = new THREE.SphereGeometry(1, 32, 32);
+    const geometry = new THREE.SphereGeometry(0.8, 32, 32);
 
     useFrame(() => {
         sunRef.current.rotation.x += 0.001;
@@ -78,11 +78,11 @@ const Sun = () => {
             <mesh geometry={geometry} ref={sunRef} material={material} position={[0,0,0]}  >
                 {/* <meshStandardMaterial color={'orange'}/> */}
             </mesh>
-            <ambientLight
+            <pointLight
             ref={LightRef}
-            position={[10, 10, 10]}
+            position={[10, 100, 100]}
             intensity={1}
-            color={'grey'}
+            color={'white'}
             />
         </>
     
@@ -379,7 +379,8 @@ const Info = () => {
 
     return (
         <>
-            <p style={{whiteSpace: "pre", position: "absolute"}}>Distance between Planets : <br></br> {/*지구와의 거리*/}
+            <p style={{whiteSpace: "pre", position: "absolute"}}>
+            Distance between Planets : <br></br> {/*지구와의 거리*/}
             Surface temperatures of Planets (Relative to Earth) : <br></br> {/*표면 온도*/}
             Ra / Dec : <br></br> {/*적경 및 적위*/}
             Az / Alt : <br></br> {/*수평 좌표계*/}
