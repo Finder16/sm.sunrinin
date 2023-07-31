@@ -5,7 +5,7 @@
     left: 1340px;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: rgba(40, 32, 112, 0.217);
     padding: 10px 20px;
     box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
     border-radius: 5px;
@@ -22,7 +22,7 @@
 
 .nav a {
     text-decoration: none;
-    color: #0008fc;
+    color: #ffffff;
     text-transform: uppercase;
     font-size: 12px;
     text-align: center;
