@@ -78,10 +78,10 @@ const Sun = () => {
             <mesh geometry={geometry} ref={sunRef} material={material} position={[0,0,0]}  >
                 {/* <meshStandardMaterial color={'orange'}/> */}
             </mesh>
-            <ambientLight
+            <pointLight
             ref={LightRef}
             position={[10, 100, 100]}
-            intensity={0.8}
+            intensity={1}
             color={'white'}
             />
         </>
