@@ -1,0 +1,84 @@
+.signupForm {
+    background-color: black;
+    width: 100vw;
+    height: 100vw;
+}
+
+.signupBox {
+    position: relative;
+    top: 80px;
+    left: 460px;
+    width: 502px;
+    height: 542px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    background: #4A4A4A;
+}
+
+.signupTitle {
+    position: absolute;
+    top: 30px;
+    left: 150px;
+    color: white;
+    font-size: 400%;
+}
+
+.signupUsername, .signupEmail, .signupPassword {
+    position: absolute;
+    border: none;
+    width: 460px;
+    height: 61px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #FFF;
+    font-size: x-large;
+}
+
+.signupUsername {
+    border: none;
+    position: relative;
+    top: 200px;
+    left: 20px;
+}
+
+.signupEmail {
+    border: none;
+    position: relative;
+    top: 220px;
+    left: 20px;
+}
+
+.signupPassword {
+    border: none;
+    position: relative;
+    top: 240px;
+    left: 20px;
+}
+
+.signupEmail, .signupUsername, .signupPassword:focus {
+    outline: none;
+}
+
+.signupButton {
+    position: absolute;
+    right: 15px;
+    top: 450px;
+    width: 467px;
+    height: 61px;
+    border: none;
+    box-shadow: #0000005f 3px 3px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #818181;
+    color: #DFDFDF;
+    font-family: Inter;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.signupButton:hover {
+    cursor: pointer;
+    background-color: #2c2c2c;
+}
