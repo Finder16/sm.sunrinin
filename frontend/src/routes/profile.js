@@ -3,7 +3,7 @@ import React from "react";
 function Profile() {
     return (
         <div className="profileBox">
-            <img alt="profileImage"></img>
+            <img src="" alt="profileImage" ></img>
             <p className="myName">이재영</p>
             <p className="myInfo">자기소개 : 이재영 입니다.</p>
             <p className="observationDate">관측 날짜 : 2023-06-14</p>
