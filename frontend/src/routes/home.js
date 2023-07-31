@@ -44,6 +44,7 @@ import { OrbitControls } from '@react-three/drei';
 
 function OrthographicCamera(props) {
     const {
+        // eslint-disable-next-line
         gl: { domElement },
         size: { width, height },
     } = useThree()

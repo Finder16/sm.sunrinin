@@ -10,13 +10,13 @@ import Profile from './routes/profile'
 function App() {
   return (
     <HashRouter>
-      <Navigation />
       <Routes>
-      <Route path="/" exact={true} component={Home} />
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/profile" component={Profile} />
+      <Route path="/" exact={true} element={<Home/>} />
+      <Route path="/login" element={<Login/>} />
+      <Route path="/signup" element={<Signup/>} />
+      <Route path="/profile" element={<Profile/>} />
       </Routes>
+      <Navigation />
     </HashRouter>
   );
 }
