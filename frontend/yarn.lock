@@ -6849,6 +6849,7 @@ __metadata:
     react-router-dom: ^6.14.2
     react-scripts: 5.0.1
     react-three-fiber: ^6.0.13
+    three: ^0.155.0
     web-vitals: ^2.1.0
   languageName: unknown
   linkType: soft
@@ -12924,6 +12925,13 @@ __metadata:
   peerDependencies:
     three: ">=0.128.0"
   checksum: 4be28398aca86cb0dda42ce2e48331192250ab5007b62e6f2848fe6e46fabde9ca9b9e344e0c1f69d86b5358bc0bee25d18fbd029a36f58fcc043fcee92d0579
+  languageName: node
+  linkType: hard
+
+"three@npm:^0.155.0":
+  version: 0.155.0
+  resolution: "three@npm:0.155.0"
+  checksum: 55de8af716686be2159b2ff407501ce2e6418b7d16a8dc57f3dcf9f08c4a6bedf0623fa8ddb67c1ae6f679d7ca53cfa0c64bab6b0577d6c467618389d5561211
   languageName: node
   linkType: hard
 
