@@ -3,16 +3,19 @@ import './signup.css';
 
 function Signup() {
     return (
-        <form method="post" action="" className="signupForm">
-            <div className="signupBox">
-                <h1 className="signupTitle">Sign Up</h1>
+        <>
+        <video muted autoPlay loop>
+            <source src="img/background.mp4" type="video/mp4"/>
+        </video>
+        <div className="signup-container">
+            <h1 className="signupTitle">Signup</h1>
+            <form method="post" action="/signup" className="signupForm">
                 <input type="text" className="signupUsername" placeholder="Username"></input>
-                <input type="text" className="signupEmail" placeholder="Email"></input>
                 <input type="password" className="signupPassword" placeholder="Password"></input>
                 <button type="submit" className="signupButton">Signup</button>
-            </div>
-        </form>
-        
+            </form>
+        </div>
+        </>
     )
 }
 
