@@ -3,44 +3,6 @@ import * as THREE from "three";
 import {Canvas, useFrame, useThree} from 'react-three-fiber';
 import { OrbitControls } from '@react-three/drei';
 
-// const Particles = () => {
-//     const particlesCnt = 2000;
-//     const posArray = new Float32Array(particlesCnt * 3);
-
-//     for (let i = 0; i < particlesCnt * 3; i++) {
-//         posArray[i] = (Math.random() - 0.5) * Math.random() * 5;
-//     }
-    
-//     const canvas = document.createElement("canvas");
-//     canvas.width = 512;
-//     canvas.height = 512;
-//     const ctx = canvas.getContext("2d");
-//     ctx.beginPath();
-//     ctx.arc(256, 256, 128, 0, Math.PI * 2, false);
-//     ctx.fillStyle = "white";
-//     ctx.fill();
-//     ctx.closePath();
-
-//     return (
-//         <points>
-//             <bufferGeometry attach="geometry">
-//                 <bufferAttribute
-//                 attachObject={["attributes", "position"]}
-//                 array={posArray}
-//                 itemSize={3}
-//                 />
-//             </bufferGeometry>
-//             <pointsMaterial
-//                 attach="material"
-//                 size={0.01}
-//                 sizeAttenuation={false}
-//                 color="yellow"
-//                 transparent={true}
-//             />
-
-//         </points>
-//     );
-// };
 
 function OrthographicCamera(props) {
     const {
@@ -53,6 +15,37 @@ function OrthographicCamera(props) {
 
     return <orthographicCamera {...props} aspect={aspect} zoom={10} />
 }
+
+const Particles = () => {
+    const particlesGeometry = new THREE.SphereGeometry();
+    const particlesMaterial = new THREE.PointsMaterial({
+        size: 0.06,
+        color: "white",
+        transparent: true,
+    });
+
+    const particlesCnt = 2000; //개수
+    const posArray = new Float32Array(particlesCnt * 3);
+
+    for (let i = 0; i < particlesCnt * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 50;
+    } //초기위치
+
+    particlesGeometry.setAttribute(
+        'position',
+        new THREE.BufferAttribute(posArray, 3)
+    ); //위치 속성
+
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+
+    useFrame(() => {
+        particlesMesh.rotation.x += 0.0002;
+        particlesMesh.rotation.y += 0.0002;
+        particlesMesh.rotation.z += 0.0002;
+    }); //회전
+
+    return <primitive object={particlesMesh} />;
+};
 
 const Sun = () => {
     const sunRef = useRef();
@@ -322,7 +315,6 @@ const SaturnRing = () => {
     )
 }
 
-
 const Uranus = () => {
     const UraRef = useRef();
     const radius = 5.5;
@@ -396,8 +388,9 @@ const App = () => {
 
     return (
         <div>
-        <Canvas style={{ width: "100vw", height: "100vh", backgroundColor: "#011224"}}>
+        <Canvas style={{ width: "100vw", height: "100vh"}}>
             <OrthographicCamera position={[0,0, 100]} />
+            <Particles />
             <Sun />
             <Mercury/>
             <Venus />
@@ -415,6 +408,7 @@ const App = () => {
     );
     
 };
+
 
 const Info = () => {
 
