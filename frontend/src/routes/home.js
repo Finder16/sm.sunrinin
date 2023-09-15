@@ -58,7 +58,7 @@ const Sun = () => {
     const material = new THREE.MeshStandardMaterial({ map: texture });
 
 
-    const geometry = new THREE.SphereGeometry(0.8, 32, 32);
+    const geometry = new THREE.SphereGeometry(0.5, 32, 32);
 
     useFrame(() => {
         sunRef.current.rotation.x += 0.0005;
@@ -87,7 +87,7 @@ const Mercury = () => {
     const radius = 1.5;
     const speed = 0.1;
     
-    const MerGeometry = new THREE.SphereGeometry(0.05, 32, 32);
+    const MerGeometry = new THREE.SphereGeometry(0.1, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
     const imageUrl = '/img/mercuryTexture.png';
@@ -120,7 +120,7 @@ const Venus = () => {
     const radius = 2;
     const speed = 0.05;
     
-    const VenGeometry = new THREE.SphereGeometry(0.095, 32, 32);
+    const VenGeometry = new THREE.SphereGeometry(0.15, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
     const imageUrl = '/img/venTexture.png';
@@ -151,7 +151,7 @@ const Earth = () => {
     const radius = 2.5;
     const speed = 0.07;
 
-    const EarthGeometry = new THREE.SphereGeometry(0.1, 32, 32);
+    const EarthGeometry = new THREE.SphereGeometry(0.2, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
     const imageUrl = '/img/earthTexture.png';
@@ -183,7 +183,7 @@ const Mars = () => {
     const radius = 3;
     const speed = 0.04;
 
-    const MarsGeometry = new THREE.SphereGeometry(0.0532, 32, 32);
+    const MarsGeometry = new THREE.SphereGeometry(0.1532, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
     const imageUrl = '/img/marsTexture.png';
@@ -212,7 +212,7 @@ const Mars = () => {
 
 const Jupiter = () => {
     const JupRef = useRef();
-    const radius = 3.5;
+    const radius = 3.8;
     const speed = 0.01;
 
     const JupGeometry = new THREE.SphereGeometry(0.3,32,32);
@@ -244,7 +244,7 @@ const Jupiter = () => {
 
 const Saturn = () => {
     const SatRef = useRef();
-    const radius = 4.5;
+    const radius = 4.8;
     const speed = 0.02;
 
     const SatGeometry = new THREE.SphereGeometry(0.25,32,32);
@@ -278,17 +278,17 @@ const Saturn = () => {
 
 const SaturnRing = () => {
     const RingRef = useRef();
-    const radius = 4.5;
+    const radius = 4.8;
     const speed = 0.02;
 
     const RingGeometry = new THREE.TorusGeometry(1, 0.2, 2, 50);
     RingGeometry.rotateX(-Math.PI / 2);
 
-    const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/SatRing.png';
-    const texture = textureLoader.load(imageUrl);
+    // const textureLoader = new THREE.TextureLoader();
+    // const imageUrl = '/img/SatRing.png';
+    // const texture = textureLoader.load(imageUrl);
 
-    const material = new THREE.MeshStandardMaterial({ map: texture });
+    // const material = new THREE.MeshStandardMaterial({ map: texture });
 
     useFrame((state, delta) => {
         const t = state.clock.getElapsedTime(); // 경과 시간
@@ -308,8 +308,8 @@ const SaturnRing = () => {
 
     return (
         <>
-        <mesh geometry={RingGeometry}  material={material} ref={(mesh) => { RingRef.current = mesh }} scale={[0.4,0.4,0.4]} position={[1, 0, 0]}>
-            {/* <meshStandardMaterial color={'orange'} ref={saturnRing} /> */}
+        <mesh geometry={RingGeometry}  /*material={material}*/ ref={(mesh) => { RingRef.current = mesh }} scale={[0.4,0.4,0.4]} position={[1, 0, 0]}>
+            <meshStandardMaterial color={'wheat'} ref={saturnRing} />
         </mesh>
         </>
     )
@@ -317,10 +317,10 @@ const SaturnRing = () => {
 
 const Uranus = () => {
     const UraRef = useRef();
-    const radius = 5.5;
+    const radius = 5.8;
     const speed = 0.03;
 
-    const UraGeometry = new THREE.SphereGeometry(0.08, 32, 32);
+    const UraGeometry = new THREE.SphereGeometry(0.13, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
     const imageUrl = '/img/uraTexture.png';
@@ -351,10 +351,10 @@ const Uranus = () => {
 
 const Neptune = () => {
     const NepRef = useRef();
-    const radius = 6.3;
+    const radius = 6.6;
     const speed = 0.02;
 
-    const NepGeometry = new THREE.SphereGeometry(0.08, 32, 32);
+    const NepGeometry = new THREE.SphereGeometry(0.13, 32, 32);
 
     const textureLoader = new THREE.TextureLoader();
     const imageUrl = '/img/nepTexture.png';
@@ -402,7 +402,6 @@ const App = () => {
             <Uranus />
             <Neptune />
             <OrbitControls />
-            {/* <Particles /> */}
         </Canvas>
         </div>
     );
