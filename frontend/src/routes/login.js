@@ -4,7 +4,7 @@ import './login.css';
 function Login() {
     return (
         <>
-        <video muted autoPlay loop>
+        <video muted autoPlay loop className="bgVideo">
             <source src="img/background.mp4" type="video/mp4"/>
         </video>
         <div className="login-container">
