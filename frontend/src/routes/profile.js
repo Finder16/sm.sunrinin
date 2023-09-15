@@ -4,6 +4,7 @@ import profileImage from '../profileImage.webp';
 import observationImage from '../observationImage.webp';
 import BG from '../profileBG.gif';
 import camera from '../camera.webp';
+import { Link } from "react-router-dom";
 
 function Profile() {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -39,7 +40,7 @@ function Profile() {
             <p className="myName">이재영</p>
             {/* <p className="myInfo">자기소개: 이재영입니다.</p>    */}
             <p className="observationDate">관측 날짜: 2023-06-14</p>
-            <img src={observationImage} alt="observationImage" className="observationImage" />
+            <Link to="/video"><img src={observationImage} alt="observationImage" className="observationImage" /></Link>
             <textarea className="commentContent" />
             <button className="commentButton" placeholder="Write your comment here...">코멘트 등록</button>
         </div>
