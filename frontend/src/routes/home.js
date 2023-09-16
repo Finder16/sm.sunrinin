@@ -87,12 +87,12 @@ const SaturnRing = () => {
     // 고리 크기, 두께, 세분화 수, 의 세분화 수
     RingGeometry.rotateX(-Math.PI / 2); // 고리 수평 배치
 
-    useFrame((state, delta) => {
-        const t = state.clock.getElapsedTime(); // 경과 시간
+    useFrame(({clock}) => {
+        const t = clock.getElapsedTime(); // 경과 시간
         const angle = t * speed; // 현재 시간에 해당하는 각도
         const x = radius * Math.cos(angle);
         const z = radius * Math.sin(angle);
-        // 좌표계산 : 현재시간에 해당하는 각도의 삼각함수 값을 반지름과 곱한다.
+        // 좌표계산 : 현재시간에 해당하는 각도의 삼각함수 값을 태양과의 거리와 곱한다.
 
         RingRef.current.position.set(x, 0, z); // 해당 위치로 이동
     });
@@ -106,7 +106,7 @@ const SaturnRing = () => {
 
     return (
         <>
-        <mesh geometry={RingGeometry}  /*material={material}*/ ref={(mesh) => { RingRef.current = mesh }} scale={[0.4,0.4,0.4]} position={[1, 0, 0]}>
+        <mesh geometry={RingGeometry} ref={(mesh) => { RingRef.current = mesh }} scale={[0.4,0.4,0.4]} position={[1, 0, 0]}>
             <meshStandardMaterial color={'wheat'} ref={saturnRing} />
         </mesh>
         </>
