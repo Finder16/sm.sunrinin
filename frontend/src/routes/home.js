@@ -1,20 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from "three";
-import {Canvas, useFrame, useThree} from 'react-three-fiber';
+import { Canvas, useFrame } from 'react-three-fiber';
 import { OrbitControls } from '@react-three/drei';
-
-
-function OrthographicCamera(props) {
-    const {
-        // eslint-disable-next-line
-        gl: { domElement },
-        size: { width, height },
-    } = useThree()
-
-    const aspect = width / height
-
-    return <orthographicCamera {...props} aspect={aspect} zoom={10} />
-}
 
 const Particles = () => {
     const particlesGeometry = new THREE.SphereGeometry();
@@ -26,10 +13,11 @@ const Particles = () => {
 
     const particlesCnt = 2000; //개수
     const posArray = new Float32Array(particlesCnt * 3);
+    //실수값으로 각 별의 위치배열
 
     for (let i = 0; i < particlesCnt * 3; i++) {
         posArray[i] = (Math.random() - 0.5) * 50;
-    } //초기위치
+    } //초기위치를 랜덤으로 설정하고 50을 곱해서 적당한 거리로
 
     particlesGeometry.setAttribute(
         'position',
@@ -58,10 +46,10 @@ const Sun = () => {
     const material = new THREE.MeshStandardMaterial({ map: texture });
 
 
-    const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const geometry = new THREE.SphereGeometry(0.5, 32, 32); //반지름 , 부드러운 정도
 
     useFrame(() => {
-        sunRef.current.rotation.x += 0.0005;
+        sunRef.current.rotation.x += 0.0005; //회전
         sunRef.current.rotation.y += 0.0005;
         sunRef.current.rotation.z += 0.0005;
     });
@@ -84,7 +72,7 @@ const Sun = () => {
 
 const Mercury = () => {
     const MerRef = useRef();
-    const radius = 1.5;
+    const radius = 1.5; //태양과 떨어진 거리
     const speed = 0.1;
     
     const MerGeometry = new THREE.SphereGeometry(0.1, 32, 32);
@@ -99,10 +87,10 @@ const Mercury = () => {
     useFrame((state, delta) => {
         const t = state.clock.getElapsedTime(); // 경과 시간
         const angle = t * speed; // 현재 시간에 해당하는 각도
-        const x = radius * Math.cos(angle);
-        const z = radius * Math.sin(angle);
+        const x = radius * Math.cos(angle); // x좌표 계산
+        const z = radius * Math.sin(angle); // z좌표 계산
         MerRef.current.position.set(x, 0, z); // 해당 위치로 이동
-        MerRef.current.rotation.y += 0.005;
+        MerRef.current.rotation.y += 0.005; // 공전방향과 속도
 
     });
 
@@ -278,31 +266,27 @@ const Saturn = () => {
 
 const SaturnRing = () => {
     const RingRef = useRef();
-    const radius = 4.8;
+    const radius = 4.8; //태양과의 거리는 토성과 동일
     const speed = 0.02;
 
     const RingGeometry = new THREE.TorusGeometry(1, 0.2, 2, 50);
-    RingGeometry.rotateX(-Math.PI / 2);
-
-    // const textureLoader = new THREE.TextureLoader();
-    // const imageUrl = '/img/SatRing.png';
-    // const texture = textureLoader.load(imageUrl);
-
-    // const material = new THREE.MeshStandardMaterial({ map: texture });
+    // 고리 크기, 두께, 세분화 수, 의 세분화 수
+    RingGeometry.rotateX(-Math.PI / 2); // 고리 수평 배치
 
     useFrame((state, delta) => {
         const t = state.clock.getElapsedTime(); // 경과 시간
         const angle = t * speed; // 현재 시간에 해당하는 각도
         const x = radius * Math.cos(angle);
         const z = radius * Math.sin(angle);
+        // 좌표계산 : 현재시간에 해당하는 각도의 삼각함수 값을 반지름과 곱한다.
+
         RingRef.current.position.set(x, 0, z); // 해당 위치로 이동
-        // RingRef.current.rotation.y += 0.01
     });
 
     const saturnRing = useRef()
     useEffect(() => {
         if (saturnRing.current && saturnRing.current.geometry) {
-            saturnRing.current.geometry.parameters.radius = 0.3
+            saturnRing.current.geometry.parameters.radius = 0.3 // 고리 반지름 설정
         }
     }, [])
 
@@ -384,12 +368,34 @@ const Neptune = () => {
 
 }
 
+const Orbit = ({ radius }) => {
+    const orbitRef = useRef();
+
+    const points = [];
+    for (let i = 0; i <= 360; i += 5) { //0도부터 360도까지 5도 간격으로 점 생성
+        const x = radius * Math.cos((i * Math.PI) / 180); 
+        const z = radius * Math.sin((i * Math.PI) / 180);
+        //좌표계산 : 현재 각도(i)를 라디안(반지름 길이와 호의 길이의 비율)로 변환하고 각 삼각함수값에 넘겨준 후 반지름과 곱한다.
+        
+        points.push(new THREE.Vector3(x, 0, z)); //3d 점으로 변환 후 배열에 추가
+    }
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points); //기하 정보 참조
+    const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+
+    return (
+        <line ref={orbitRef}>
+            <bufferGeometry attach="geometry" {...geometry} />
+            <lineBasicMaterial attach="material" {...material} />
+        </line>
+    );
+};
+
 const App = () => {
 
     return (
         <div>
         <Canvas style={{ width: "100vw", height: "100vh"}}>
-            <OrthographicCamera position={[0,0, 100]} />
             <Particles />
             <Sun />
             <Mercury/>
@@ -401,13 +407,20 @@ const App = () => {
             <SaturnRing />
             <Uranus />
             <Neptune />
+            <Orbit radius={1.5} /> {/* Mercury */}
+            <Orbit radius={2} /> {/* Venus */}
+            <Orbit radius={2.5} /> {/* Earth */}
+            <Orbit radius={3} /> {/* Mars */}
+            <Orbit radius={3.8} /> {/* Jupiter */}
+            <Orbit radius={4.8} /> {/* Saturn */}
+            <Orbit radius={5.8} /> {/* Uranus */}
+            <Orbit radius={6.6} /> {/* Neptune */}
             <OrbitControls />
         </Canvas>
         </div>
     );
     
 };
-
 
 const Info = () => {
 
