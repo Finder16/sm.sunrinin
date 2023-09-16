@@ -157,9 +157,15 @@ const Earth = () => {
         EarthRef.current.rotation.y += 0.005
     });
 
+    const earthInfo = () => {
+        console.log('Earth clicked');
+    }
+
     return (
         <>
-        <mesh geometry={EarthGeometry} ref={EarthRef} material={material} position={[-1,0,0]}>
+        <mesh 
+        geometry={EarthGeometry} ref={EarthRef} material={material} position={[-1,0,0]}
+        onClick={earthInfo}>
             {/* <meshStandardMaterial color={'blue'}/> */}
         </mesh>
         </>
@@ -424,10 +430,14 @@ const App = () => {
 
 const Info = () => {
 
+    // const detail = {
+    //     'distance': 227.9,
+    //     'temperature': -63
+    // }
+
     return (
         <>
-            <p style={{whiteSpace: "pre", position: "absolute"}}>
-            Distance between Planets : Mars : 227.9 million km <br></br> {/*지구와의 거리*/}
+            <p style={{whiteSpace: "pre", position: "absolute"}}> Distance between Planets : Mars : 227.9 million km <br></br> {/*지구와의 거리*/}
             Surface temperatures of Planets (Relative to Earth) : Mars : -63°C <br></br> {/*표면 온도*/}
             Ra / Dec : Mars : 2h 22m 25s / 15° 46° 41° <br></br> {/*적경 및 적위*/}
             Az / Alt : Mars : 148° / 18°<br></br> {/*수평 좌표계*/}
