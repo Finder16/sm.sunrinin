@@ -30,7 +30,7 @@
 .uploadImg {
   position: absolute;
   top: 240px;
-  left: 830px;
+  left: 800px;
   background-color: white;
   border: none;
   border-radius: 10px;
@@ -93,7 +93,7 @@
   background-color: transparent;
   color: #fff;
   border: 1px solid #ccc;
-  padding: 10px 20px;
+  padding: 20px;
   border-radius: 30px;
   cursor: pointer;
   margin-top: 10px;

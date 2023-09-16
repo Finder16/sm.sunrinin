@@ -18,7 +18,6 @@ function Profile() {
                 setSelectedImage(dataURL);
             };
             reader.readAsDataURL(file);
-            // 파일 저장하는 코드 짤것?
         };
     }
 
