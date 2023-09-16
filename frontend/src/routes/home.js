@@ -35,240 +35,48 @@ const Particles = () => {
     return <primitive object={particlesMesh} />;
 };
 
-const Sun = () => {
-    const sunRef = useRef();
-    const LightRef = useRef();
+const createPlanets = (radius) => {
+    return new THREE.SphereGeometry(radius, 32, 32);
+}; // 행성 도형 만들기
 
-    const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/sunTexture.png';
-    const texture = textureLoader.load(imageUrl);
+const createMaterials = (textureURL) => {
+    const texture = new THREE.TextureLoader().load(textureURL);
+    return new THREE.MeshStandardMaterial({ map: texture });
+}; // 행성 재질 추가
 
-    const material = new THREE.MeshStandardMaterial({ map: texture });
+const Planets = ({ radius, distance, rotationSpeed, orbitSpeed, textureURL }) => {
+    const planetRef = useRef();
+    const geometry = createPlanets(radius);
+    const material = createMaterials(textureURL);
 
+    useFrame(({clock})=> {
+        const t = clock.getElapsedTime(); //경과시간
 
-    const geometry = new THREE.SphereGeometry(0.5, 32, 32); //반지름 , 부드러운 정도
+        //공전
+        const angle = t * orbitSpeed;
+        const x = distance * Math.cos(angle);
+        const z = distance * Math.sin(angle);
+        // 좌표계산 : 경과한 시간에 공전속도를 곱한 값의 삼각함수 값을 태양으로부터 거리와 곱한다.
+        planetRef.current.position.set(x, 0, z); // 해당 위치로 이동
 
-    useFrame(() => {
-        sunRef.current.rotation.x += 0.0005; //회전
-        sunRef.current.rotation.y += 0.0005;
-        sunRef.current.rotation.z += 0.0005;
+        planetRef.current.rotation.y += rotationSpeed; //자전
     });
+
+    const LightRef = useRef();
 
     return (
         <>
-            <mesh geometry={geometry} ref={sunRef} material={material} position={[0,0,0]} >
-                {/* <meshStandardMaterial color={'orange'}/> */}
-            </mesh>
-            <ambientLight
+        <mesh geometry={geometry} material={material} ref={planetRef} />
+        <ambientLight
             ref={LightRef}
             position={[10, 100, 100]}
-            intensity={0.9}
+            intensity={0.3}
             color={'white'}
             />
         </>
-    
+        
     );
 };
-
-const Mercury = () => {
-    const MerRef = useRef();
-    const radius = 1.5; //태양과 떨어진 거리
-    const speed = 0.1;
-    
-    const MerGeometry = new THREE.SphereGeometry(0.1, 32, 32);
-
-    const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/mercuryTexture.png';
-    const texture = textureLoader.load(imageUrl);
-
-    const material = new THREE.MeshStandardMaterial({ map: texture });
-
-
-    useFrame((state, delta) => {
-        const t = state.clock.getElapsedTime(); // 경과 시간
-        const angle = t * speed; // 현재 시간에 해당하는 각도
-        const x = radius * Math.cos(angle); // x좌표 계산
-        const z = radius * Math.sin(angle); // z좌표 계산
-        MerRef.current.position.set(x, 0, z); // 해당 위치로 이동
-        MerRef.current.rotation.y += 0.005; // 공전방향과 속도
-
-    });
-
-    return (
-        <>
-        <mesh geometry={MerGeometry} ref={MerRef} material={material} position={[-2,0,0]}>
-            {/* <meshStandardMaterial color={'grey'}/> */}
-        </mesh>
-        </>
-    )
-}
-
-const Venus = () => {
-    const VenRef = useRef();
-    const radius = 2;
-    const speed = 0.05;
-    
-    const VenGeometry = new THREE.SphereGeometry(0.15, 32, 32);
-
-    const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/venTexture.png';
-    const texture = textureLoader.load(imageUrl);
-
-    const material = new THREE.MeshStandardMaterial({ map: texture });
-
-    useFrame((state, delta) => {
-        const t = state.clock.getElapsedTime(); // 경과 시간
-        const angle = t * speed; // 현재 시간에 해당하는 각도
-        const x = radius * Math.cos(angle);
-        const z = radius * Math.sin(angle);
-        VenRef.current.position.set(x, 0, z); // 해당 위치로 이동
-        VenRef.current.rotation.y += 0.002; // 공전과 동시에 회전
-    });
-
-    return (
-        <>
-        <mesh geometry={VenGeometry} ref={VenRef} material={material} position={[-1.5,0,0]}>
-            {/* <meshStandardMaterial color={'gold'}/> */}
-        </mesh>
-        </>
-    )
-}
-
-const Earth = () => {
-    const EarthRef = useRef();
-    const radius = 2.5;
-    const speed = 0.07;
-
-    const EarthGeometry = new THREE.SphereGeometry(0.2, 32, 32);
-
-    const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/earthTexture.png';
-    const texture = textureLoader.load(imageUrl);
-
-    const material = new THREE.MeshStandardMaterial({ map: texture });
-
-    useFrame((state, delta) => {
-        const t = state.clock.getElapsedTime(); // 경과 시간
-        const angle = t * speed; // 현재 시간에 해당하는 각도
-        const x = radius * Math.cos(angle);
-        const z = radius * Math.sin(angle);
-        EarthRef.current.position.set(x, 0, z); // 해당 위치로 이동
-
-        EarthRef.current.rotation.y += 0.005
-    });
-
-    const earthInfo = () => {
-        console.log('Earth clicked');
-    }
-
-    return (
-        <>
-        <mesh 
-        geometry={EarthGeometry} ref={EarthRef} material={material} position={[-1,0,0]}
-        onClick={earthInfo}>
-            {/* <meshStandardMaterial color={'blue'}/> */}
-        </mesh>
-        </>
-    )
-}
-
-const Mars = () => {
-    const MarsRef = useRef();
-    const radius = 3;
-    const speed = 0.04;
-
-    const MarsGeometry = new THREE.SphereGeometry(0.1532, 32, 32);
-
-    const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/marsTexture.png';
-    const texture = textureLoader.load(imageUrl);
-
-    const material = new THREE.MeshStandardMaterial({ map: texture });
-
-    useFrame((state, delta) => {
-        const t = state.clock.getElapsedTime(); // 경과 시간
-        const angle = t * speed; // 현재 시간에 해당하는 각도
-        const x = radius * Math.cos(angle);
-        const z = radius * Math.sin(angle);
-        MarsRef.current.position.set(x, 0, z); // 해당 위치로 이동
-
-        MarsRef.current.rotation.y += 0.0025
-    });
-
-    return (
-        <>
-        <mesh geometry={MarsGeometry} ref={MarsRef} material={material} position={[-0.5,0,0]}>
-            {/* <meshStandardMaterial color={'red'}/> */}
-        </mesh>
-        </>
-    )
-}
-
-const Jupiter = () => {
-    const JupRef = useRef();
-    const radius = 3.8;
-    const speed = 0.01;
-
-    const JupGeometry = new THREE.SphereGeometry(0.3,32,32);
-
-    const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/jupTexture.png';
-    const texture = textureLoader.load(imageUrl);
-
-    const material = new THREE.MeshStandardMaterial({ map: texture });
-
-    useFrame((state, delta) => {
-        const t = state.clock.getElapsedTime(); // 경과 시간
-        const angle = t * speed; // 현재 시간에 해당하는 각도
-        const x = radius * Math.cos(angle);
-        const z = radius * Math.sin(angle);
-        JupRef.current.position.set(x, 0, z); // 해당 위치로 이동
-
-        JupRef.current.rotation.y += 0.015
-    });
-
-    return (
-        <>
-        <mesh geometry={JupGeometry} ref={JupRef} material={material} position={[0,0,0]}>
-            {/* <meshStandardMaterial color={'#856945'}/> */}
-        </mesh>
-        </>
-    )
-}
-
-const Saturn = () => {
-    const SatRef = useRef();
-    const radius = 4.8;
-    const speed = 0.02;
-
-    const SatGeometry = new THREE.SphereGeometry(0.25,32,32);
-
-    const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/satTexture.png';
-    const texture = textureLoader.load(imageUrl);
-
-    const material = new THREE.MeshStandardMaterial({ map: texture });
-
-    useFrame((state, delta) => {
-        const t = state.clock.getElapsedTime(); // 경과 시간
-        const angle = t * speed; // 현재 시간에 해당하는 각도
-        const x = radius * Math.cos(angle);
-        const z = radius * Math.sin(angle);
-        SatRef.current.position.set(x, 0, z); // 해당 위치로 이동
-
-        //SatRef.current.rotation.x += 0.1
-        SatRef.current.rotation.y += 0.01
-        //SatRef.current.rotation.z += 0.1
-    });
-
-    return (
-        <>
-        <mesh geometry={SatGeometry} ref={SatRef} material={material} position={[1,0,0]}>
-            {/* <meshStandardMaterial color={'#8c5f26'}/> */}
-        </mesh>
-        </>
-    )
-}
 
 const SaturnRing = () => {
     const RingRef = useRef();
@@ -305,75 +113,6 @@ const SaturnRing = () => {
     )
 }
 
-const Uranus = () => {
-    const UraRef = useRef();
-    const radius = 5.8;
-    const speed = 0.03;
-
-    const UraGeometry = new THREE.SphereGeometry(0.13, 32, 32);
-
-    const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/uraTexture.png';
-    const texture = textureLoader.load(imageUrl);
-
-    const material = new THREE.MeshStandardMaterial({ map: texture });
-
-    useFrame((state, delta) => {
-        const t = state.clock.getElapsedTime(); // 경과 시간
-        const angle = t * speed; // 현재 시간에 해당하는 각도
-        const x = radius * Math.cos(angle);
-        const z = radius * Math.sin(angle);
-        UraRef.current.position.set(x, 0, z); // 해당 위치로 이동
-
-        UraRef.current.rotation.x += 0.003
-        //UraRef.current.rotation.y += 0.03
-        //UraRef.current.rotation.z += 0.03
-    });
-
-    return (
-        <>
-        <mesh geometry={UraGeometry} ref={UraRef} material={material} position={[2, 0, 0]}>
-            {/* <meshStandardMaterial color={'#26598c'}/> */}
-        </mesh>
-        </>
-    )
-}
-
-const Neptune = () => {
-    const NepRef = useRef();
-    const radius = 6.6;
-    const speed = 0.02;
-
-    const NepGeometry = new THREE.SphereGeometry(0.13, 32, 32);
-
-    const textureLoader = new THREE.TextureLoader();
-    const imageUrl = '/img/nepTexture.png';
-    const texture = textureLoader.load(imageUrl);
-
-    const material = new THREE.MeshStandardMaterial({ map: texture });
-
-    useFrame((state, delta) => {
-        const t = state.clock.getElapsedTime(); // 경과 시간
-        const angle = t * speed; // 현재 시간에 해당하는 각도
-        const x = radius * Math.cos(angle);
-        const z = radius * Math.sin(angle);
-        NepRef.current.position.set(x, 0, z); // 해당 위치로 이동
-
-        //NepRef.current.rotation.x += 0.03
-        NepRef.current.rotation.y += 0.003
-        //NepRef.current.rotation.z += 0.03
-    });
-
-    return (
-        <>
-        <mesh geometry={NepGeometry} ref={NepRef} material={material} position={[2.5, 0, 0]}>
-            {/* <meshStandardMaterial color={'#1b73cc'} /> */}
-        </mesh>
-        </>
-    )
-
-}
-
 const Orbit = ({ radius }) => {
     const orbitRef = useRef();
 
@@ -403,24 +142,33 @@ const App = () => {
         <div>
         <Canvas style={{ width: "100vw", height: "100vh"}}>
             <Particles />
-            <Sun />
-            <Mercury/>
-            <Venus />
-            <Earth />
-            <Mars />
-            <Jupiter />
-            <Saturn />
-            <SaturnRing />
-            <Uranus />
-            <Neptune />
+            {/* {sun} */}
+            <Planets radius={0.5} distance={0} rotationSpeed={0} orbitSpeed={0} textureURL={'/img/sunTexture.png'} />
+            
             <Orbit radius={1.5} /> {/* Mercury */}
+            <Planets radius={0.1} distance={1.5} rotationSpeed={0.005} orbitSpeed={0.1} textureURL={'/img/mercuryTexture.png'} />
+
             <Orbit radius={2} /> {/* Venus */}
+            <Planets radius={0.15} distance={2} rotationSpeed={0.002} orbitSpeed={0.05} textureURL={'/img/venTexture.png'} />
+
             <Orbit radius={2.5} /> {/* Earth */}
+            <Planets radius={0.2} distance={2.5} rotationSpeed={0.005} orbitSpeed={0.07} textureURL={'/img/earthTexture.png'} />
+
             <Orbit radius={3} /> {/* Mars */}
+            <Planets radius={0.1532} distance={3} rotationSpeed={0.0025} orbitSpeed={0.04} textureURL={'/img/marsTexture.png'} />
+
             <Orbit radius={3.8} /> {/* Jupiter */}
+            <Planets radius={0.3} distance={3.8} rotationSpeed={0.015} orbitSpeed={0.01} textureURL={'/img/jupTexture.png'} />
+            
             <Orbit radius={4.8} /> {/* Saturn */}
+            <Planets radius={0.25} distance={4.8} rotationSpeed={0.01} orbitSpeed={0.02} textureURL={'/img/satTexture.png'} />
+            <SaturnRing />
+
             <Orbit radius={5.8} /> {/* Uranus */}
+            <Planets radius={0.13} distance={5.8} rotationSpeed={0.003} orbitSpeed={0.03} textureURL={'/img/uraTexture.png'} />
+
             <Orbit radius={6.6} /> {/* Neptune */}
+            <Planets radius={0.13} distance={6.6} rotationSpeed={0.003} orbitSpeed={0.02} textureURL={'/img/nepTexture.png'} />
             <OrbitControls />
         </Canvas>
         </div>
@@ -429,11 +177,6 @@ const App = () => {
 };
 
 const Info = () => {
-
-    // const detail = {
-    //     'distance': 227.9,
-    //     'temperature': -63
-    // }
 
     return (
         <>
