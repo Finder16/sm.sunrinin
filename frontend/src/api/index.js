@@ -25,3 +25,7 @@ export const me = async () => {
   return res.data;
 }
 
+export const planets = async () => {
+  const res = await api.get("/", {});
+  return res.data;
+}
