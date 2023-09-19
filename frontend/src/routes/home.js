@@ -152,6 +152,8 @@ const App = () => {
     const [selectedPlanet, setSelectedPlanet] = useState(null);
     const handlePlanetClick = (planetName) => {
         setSelectedPlanet(planetName);
+        window.history.pushState({}, '', `/${planetName.toLowerCase()}`);
+
     }
 
     return (
