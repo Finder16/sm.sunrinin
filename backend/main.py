@@ -6,10 +6,12 @@ from jose import jwt
 from datetime import datetime, timedelta
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import and_, or_
 
 import schemas
 import model
 import hashlib
+from cacu_planet import infor , planet
 
 ACCESS_TOKEN_EXPIRE_DAYS = 1
 JWT_SECRET_KEY = "secret"
@@ -72,6 +74,30 @@ def get_db():
         yield db
     finally:
         db.close()
+
+@app.post("/")
+async def main(data: schemas.Planet ,db: Session = Depends(get_db)):
+    
+    for i in range(0,7):
+
+        db_data = model.Planet(
+            Name = infor[i]["name"],
+            Mass = infor[i]["mass"],
+            Diameter = infor[i]["diameter"],
+            Gravity = infor[i]["gravity"],
+            Temperature = infor[i]["temperature"],
+            Orbital_velocity = infor[i]["orbital_velocity"],
+            Earth_latitude =  infor[i]["latitude_deg"],
+            Earth_longitude =  infor[i]["longitude_deg"],
+            Declination = infor[i]["declination"],
+            Right_ascension = infor[i]["right_ascension"],
+            Earth_from_distance = infor[i]["earth-distance"]
+        )
+
+        db.add(db_data)
+    db.commit()
+
+    return db.query(model.Planet).filter_by(Name = 'Saturn').first()
 
 @app.post("/signup")
 async def singup(user: schemas.UserCreate, db: Session = Depends(get_db)):
