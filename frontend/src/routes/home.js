@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from "three";
 import { Canvas, useFrame } from 'react-three-fiber';
 import { OrbitControls } from '@react-three/drei';
+import { planets } from '../api';
 
 const Particles = () => {
     const particlesGeometry = new THREE.SphereGeometry();
@@ -150,76 +151,77 @@ const Orbit = ({ radius }) => {
 const App = () => {
 
     const [selectedPlanet, setSelectedPlanet] = useState(null);
+
     const handlePlanetClick = (planetName) => {
         setSelectedPlanet(planetName);
         window.history.pushState({}, '', `/${planetName.toLowerCase()}`);
-
     }
 
     return (
         <div>
-        <Canvas style={{ width: "100vw", height: "100vh"}}>
-            <Particles />
-            {/* {sun} */}
-            <Planets radius={0.5} distance={0} rotationSpeed={0} orbitSpeed={0} 
-            textureURL={'/img/sunTexture.png'}/>
-            
-            <Orbit radius={1.5} /> {/* Mercury */}
-            <Planets radius={0.1} distance={1.5} rotationSpeed={0.005} orbitSpeed={0.1} 
-            textureURL={'/img/mercuryTexture.png'} onClick={()=>handlePlanetClick('Mercury')}/>
+            <Canvas style={{ width: "100vw", height: "100vh"}}>
+                <Particles />
+                {/* {sun} */}
+                <Planets radius={0.5} distance={0} rotationSpeed={0} orbitSpeed={0} 
+                textureURL={'/img/sunTexture.png'}/>
+                
+                <Orbit radius={1.5} /> {/* Mercury */}
+                <Planets radius={0.1} distance={1.5} rotationSpeed={0.005} orbitSpeed={0.1} 
+                textureURL={'/img/mercuryTexture.png'} onClick={()=>handlePlanetClick('Mercury')}/>
 
-            <Orbit radius={2} /> {/* Venus */}
-            <Planets radius={0.15} distance={2} rotationSpeed={0.002} orbitSpeed={0.05} 
-            textureURL={'/img/venTexture.png'} onClick={()=>handlePlanetClick('Venus')}/>
+                <Orbit radius={2} /> {/* Venus */}
+                <Planets radius={0.15} distance={2} rotationSpeed={0.002} orbitSpeed={0.05} 
+                textureURL={'/img/venTexture.png'} onClick={()=>handlePlanetClick('Venus')}/>
 
-            <Orbit radius={2.5} /> {/* Earth */}
-            <Planets radius={0.2} distance={2.5} rotationSpeed={0.005} orbitSpeed={0.07} 
-            textureURL={'/img/earthTexture.png'} onClick={()=>handlePlanetClick('Earth')}/>
+                <Orbit radius={2.5} /> {/* Earth */}
+                <Planets radius={0.2} distance={2.5} rotationSpeed={0.005} orbitSpeed={0.07} 
+                textureURL={'/img/earthTexture.png'} onClick={()=>handlePlanetClick('Earth')}/>
 
-            <Orbit radius={3} /> {/* Mars */}
-            <Planets radius={0.1532} distance={3} rotationSpeed={0.0025} orbitSpeed={0.04} 
-            textureURL={'/img/marsTexture.png'} onClick={()=>handlePlanetClick('Mars')}/>
+                <Orbit radius={3} /> {/* Mars */}
+                <Planets radius={0.1532} distance={3} rotationSpeed={0.0025} orbitSpeed={0.04} 
+                textureURL={'/img/marsTexture.png'} onClick={()=>handlePlanetClick('Mars')}/>
 
-            <Orbit radius={3.8} /> {/* Jupiter */}
-            <Planets radius={0.3} distance={3.8} rotationSpeed={0.015} orbitSpeed={0.01} 
-            textureURL={'/img/jupTexture.png'} onClick={()=>handlePlanetClick('Jupiter')}/>
-            
-            <Orbit radius={4.8} /> {/* Saturn */}
-            <Planets radius={0.25} distance={4.8} rotationSpeed={0.01} orbitSpeed={0.02} 
-            textureURL={'/img/satTexture.png'} onClick={()=>handlePlanetClick('Saturn')}/>
-            <SaturnRing />
+                <Orbit radius={3.8} /> {/* Jupiter */}
+                <Planets radius={0.3} distance={3.8} rotationSpeed={0.015} orbitSpeed={0.01} 
+                textureURL={'/img/jupTexture.png'} onClick={()=>handlePlanetClick('Jupiter')}/>
+                
+                <Orbit radius={4.8} /> {/* Saturn */}
+                <Planets radius={0.25} distance={4.8} rotationSpeed={0.01} orbitSpeed={0.02} 
+                textureURL={'/img/satTexture.png'} onClick={()=>handlePlanetClick('Saturn')}/>
+                <SaturnRing />
 
-            <Orbit radius={5.8} /> {/* Uranus */}
-            <Planets radius={0.13} distance={5.8} rotationSpeed={0.003} orbitSpeed={0.03} 
-            textureURL={'/img/uraTexture.png'} onClick={()=>handlePlanetClick('Uranus')}/>
+                <Orbit radius={5.8} /> {/* Uranus */}
+                <Planets radius={0.13} distance={5.8} rotationSpeed={0.003} orbitSpeed={0.03} 
+                textureURL={'/img/uraTexture.png'} onClick={()=>handlePlanetClick('Uranus')}/>
 
-            <Orbit radius={6.6} /> {/* Neptune */}
-            <Planets radius={0.13} distance={6.6} rotationSpeed={0.003} orbitSpeed={0.02} 
-            textureURL={'/img/nepTexture.png'} onClick={()=>handlePlanetClick('Neptune')}/>
-            <OrbitControls />
-        </Canvas>
-        <div style={{ position: "absolute", top: 0, color: "white", marginLeft: "10px" }}>
-            <Info selectedPlanet={selectedPlanet}/>
-        </div>
+                <Orbit radius={6.6} /> {/* Neptune */}
+                <Planets radius={0.13} distance={6.6} rotationSpeed={0.003} orbitSpeed={0.02} 
+                textureURL={'/img/nepTexture.png'} onClick={()=>handlePlanetClick('Neptune')}/>
+                <OrbitControls />
+            </Canvas>
+            <div style={{ position: "absolute", top: 0, color: "white", marginLeft: "10px" }}>
+                <Info selectedPlanet={selectedPlanet}/>
+            </div>
         </div>
     );
     
 };
 
 const Info = ({selectedPlanet}) => {
-    let distance, temp, ra, dec, az, alt;
+    const [planetInfo, setPlanetInfo] = useState(null);
 
-    if(selectedPlanet === 'Mercury') {distance = 127.117444215; temp = 179; ra = '160:23:17.0'; dec = '8:15:11.6'; az = '46:24:07.1'; alt = '123:00:38.2';}
+    useEffect(() => {
+        const fetchPlanetInfo = async () => {
+            const planetData = await planets(selectedPlanet);
+            setPlanetInfo(planetData);
+        }
+        fetchPlanetInfo();
+    }, [selectedPlanet]);
+    if(!planetInfo) {return <div>Loading...</div>}
 
     return (
-        <>
-            <p style={{whiteSpace: "pre", position: "absolute"}}> 지구로부터의 거리 : {selectedPlanet} : {distance} million km <br></br> {/*지구와의 거리*/}
-            표면 온도 : {selectedPlanet} : {temp}°C <br></br> {/*표면 온도*/}
-            적경 / 적위 : {selectedPlanet} : {ra} / {dec} <br></br> {/*적경 및 적위*/}
-            위도 / 경도 : {selectedPlanet} : {az}° / {alt}°<br></br> {/*수평 좌표계*/}</p>
-        </>
-    )
-    //이름, 지름, 질량, 중력, 위도, 경도, 적위, 적경, 표면 온도, 공전 궤도의 속도
+        <></>
+    );
 }
 
 const Home = () => {
