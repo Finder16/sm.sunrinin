@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from "three";
 import { Canvas, useFrame } from 'react-three-fiber';
 import { OrbitControls } from '@react-three/drei';
-import { planets } from '../api';
+// import { planets } from '../api';
 
 const Particles = () => {
     const particlesGeometry = new THREE.SphereGeometry();
@@ -152,19 +152,20 @@ const App = () => {
 
     const [selectedPlanet, setSelectedPlanet] = useState(null);
 
-    const handlePlanetClick = (planetName) => {
-        setSelectedPlanet(planetName);
-        window.history.pushState({}, '', `/${planetName.toLowerCase()}`);
+    const handlePlanetClick = (selectedPlanet) => {
+        setSelectedPlanet(selectedPlanet);
+        window.history.pushState({}, '', `/${selectedPlanet.toLowerCase()}`);
     }
 
     return (
         <div>
             <Canvas style={{ width: "100vw", height: "100vh"}}>
                 <Particles />
+
                 {/* {sun} */}
                 <Planets radius={0.5} distance={0} rotationSpeed={0} orbitSpeed={0} 
                 textureURL={'/img/sunTexture.png'}/>
-                
+            
                 <Orbit radius={1.5} /> {/* Mercury */}
                 <Planets radius={0.1} distance={1.5} rotationSpeed={0.005} orbitSpeed={0.1} 
                 textureURL={'/img/mercuryTexture.png'} onClick={()=>handlePlanetClick('Mercury')}/>
@@ -184,7 +185,7 @@ const App = () => {
                 <Orbit radius={3.8} /> {/* Jupiter */}
                 <Planets radius={0.3} distance={3.8} rotationSpeed={0.015} orbitSpeed={0.01} 
                 textureURL={'/img/jupTexture.png'} onClick={()=>handlePlanetClick('Jupiter')}/>
-                
+
                 <Orbit radius={4.8} /> {/* Saturn */}
                 <Planets radius={0.25} distance={4.8} rotationSpeed={0.01} orbitSpeed={0.02} 
                 textureURL={'/img/satTexture.png'} onClick={()=>handlePlanetClick('Saturn')}/>
@@ -208,19 +209,109 @@ const App = () => {
 };
 
 const Info = ({selectedPlanet}) => {
-    const [planetInfo, setPlanetInfo] = useState(null);
-
-    useEffect(() => {
-        const fetchPlanetInfo = async () => {
-            const planetData = await planets(selectedPlanet);
-            setPlanetInfo(planetData);
-        }
-        fetchPlanetInfo();
-    }, [selectedPlanet]);
-    if(!planetInfo) {return <div>Loading...</div>}
+    let planetName, mass, diameter, gravity, temperature, orbital_velocity, latitude_deg, longtitude_deg, declination, right_ascension, earth_distance;
+    
+    if(selectedPlanet === 'Mercury'){
+        planetName = 'Mercury';
+        mass = '0.330(10 ^ 24kg)';
+        diameter = "4879km";
+        gravity = "3.7(m/s^2)";
+        temperature = "167(C)";
+        orbital_velocity = "47.4(km/s)";
+        latitude_deg = 0.814387857913971;
+        longtitude_deg = 2.1529502868652344;
+        declination = 0.1446301061310849;
+        right_ascension = 2.810336996387151;
+        earth_distance = 131163685.937;
+    }else if(selectedPlanet === 'Venus'){
+        planetName = 'Venus';
+        mass = '4.87(10 ^ 24kg)';
+        diameter = "12,104km";
+        gravity = '8.9(m/s^2)';
+        temperature = '464(C)';
+        orbital_velocity = '35.0(km/s)';
+        latitude_deg =  1.0773226022720337;
+        longtitude_deg = 2.694779872894287;
+        declination = 0.19951981780878816;
+        right_ascension = 2.40268229693035;
+        earth_distance = 66643736.099;
+    } else if(selectedPlanet === 'Mars'){
+        planetName = 'Mars';
+        mass = '0.642(10 ^ 24kg)';
+        diameter = '6792km';
+        gravity = '3.7(m/s^2)';
+        temperature = '-65(C)';
+        orbital_velocity = '24.1(km/s)';
+        latitude_deg =  0.2320287972688675;
+        longtitude_deg = 1.8823902606964111;
+        declination = -0.09719248768744253;
+        right_ascension = 3.3893488427015717;
+        earth_distance = 378136496.879;
+    } else if(selectedPlanet === 'Jupiter'){
+        planetName = 'Jupiter';
+        mass = '1898(10 ^ 24kg)';
+        diameter = '142,984km';
+        gravity = '23.1(m/s^2)';
+        temperature = '-110(C)';
+        orbital_velocity = '13.1(km/s)';
+        latitude_deg =  0.26284730434417725;
+        longtitude_deg = 4.846377372741699;
+        declination = 0.26311780019476144;
+        right_ascension = 0.7528474578751454;
+        earth_distance = 634880516.885;
+    } else if(selectedPlanet === 'Saturn'){
+        planetName = 'Saturn';
+        mass = '568(10 ^ 24kg)';
+        diameter = '120,536km';
+        gravity = '9.0(m/s^2)';
+        temperature = '-140(C)';
+        orbital_velocity = '9.7(km/s)';
+        latitude_deg =  -0.9387574195861816;
+        longtitude_deg = 5.3463134765625;
+        declination = -0.21621452976324568;
+        right_ascension = 5.842903523069215;
+        earth_distance = 1323211610.415;
+    } else if(selectedPlanet === 'Uranus'){
+        planetName = 'Uranus';
+        mass = '86.8(10 ^ 24kg)';
+        diameter = '51,118km';
+        gravity = '8.7(m/s^2)';
+        temperature = '167(C)';
+        orbital_velocity = '47.4(km/s)';
+        latitude_deg = 0.3954291045665741;
+        longtitude_deg =  4.818577766418457;
+        declination = 0.31732842481850987;
+        right_ascension = 0.8824945970207181;
+        earth_distance = 2850063596.242;
+    } else if(selectedPlanet === 'Neptune'){
+        planetName = 'Uranus';
+        mass = '102(10 ^ 24kg)';
+        diameter = '49,528km';
+        gravity = '11.0(m/s^2)';
+        temperature = '-200(C)';
+        orbital_velocity = '5.4(km/s)';
+        latitude_deg = -0.5486772656440735;
+        longtitude_deg =  5.125638961791992;
+        declination = -0.04640872434718615;
+        right_ascension = 6.232091607024048;
+        earth_distance = 4323684856.269;
+    } 
 
     return (
-        <></>
+        <>
+        <p>행성 이름 : {planetName}<br></br>
+        질량 : {mass}<br></br>
+        지름 : {diameter}<br></br>
+        중력 : {gravity}<br></br>
+        표면 온도 : {temperature}<br></br>
+        공전 속도 : {orbital_velocity}<br></br>
+        위도 : {latitude_deg}<br></br>
+        경도 : {longtitude_deg}<br></br>
+        적위 : {declination}<br></br>
+        적경 : {right_ascension}<br></br>
+        지구와의 거리 : {earth_distance}<br></br>
+        </p>
+        </>
     );
 }
 
