@@ -27,13 +27,16 @@ function Profile() {
         };
     }
 
-    React.useEffect(() => {
-        me().then((res) => {
-            setUser(res);
-        }).catch((err) => {
-            navigate("/login");
-        });
-    }, []);
+    // React.useEffect(() => {
+    //     me().then((res) => {
+    //         setUser(res);
+    //     }).catch((err) => {
+    //         navigate("/login");
+    //     });
+    // }, []);
+
+    const nextVideo = () => {}
+    const previousVideo = () => {}
 
     return (
         <>
@@ -50,12 +53,16 @@ function Profile() {
             <label htmlFor="imageInput" className="uploadImg">
                 <img src={camera} alt="camera" />
             </label>
-            <p className="myName">{user?.username}</p>
-            <p className="myInfo">{user?.introduce ?? "작성 안됨"}</p>   
+            <p className="myName">choeun0303</p>
+            <p className="myInfo">저는 태양계 관측을 좋아합니다.</p>   
+            <div className="buttonContainer">
+                <button onClick={previousVideo} className="videoButton">이전</button>
+                <button onClick={nextVideo} className="videoButton">다음</button>
+            </div>
             <p className="observationDate">관측 날짜: 2023-09-18</p>
             <Link to="/video"><img src={observationImage} alt="observationImage" className="observationImage" /></Link>
-            <textarea className="commentContent" />
-            <button className="commentButton" placeholder="Write your comment here...">코멘트 등록</button>
+            <textarea className="commentContent" placeholder="코멘트를 입력하세요..."/>
+            <button className="commentButton">코멘트 등록</button>
         </div>
         </>
         
